@@ -5,7 +5,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function hideContent() {
         tabsContent.forEach(tabContent => {
-            tabContent.style.display = 'none'
+            tabContent.classList.add('hide')
+            tabContent.classList.remove('show', 'fade')
         })
 
         tabs.forEach(tab => {
@@ -14,7 +15,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function viewContent(i = 0) {
-        tabsContent[i].style.display = 'flex'
+        tabsContent[i].classList.add('show', 'fade')
+        tabsContent[i].classList.remove('hide')
         tabs[i].classList.add('tabheader__item_active')
     }
 
