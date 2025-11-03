@@ -86,6 +86,32 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     renderTimer(date)
-    console.log(getTime(date))
 
+    // Modal
+
+    const buttons = document.querySelectorAll('[data-open-modal]')
+    const modal = document.querySelector('.modal')
+    const closeModalButton = document.querySelector('.modal__close')
+
+    closeModalButton.addEventListener('click', () => {
+        modal.style.display = 'none'
+    })
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', (event) => {
+            modal.style.display = 'block'
+        })
+    })
+
+    modal.addEventListener('click',(event) => {
+        if(event.target.classList.contains('modal')) {
+            modal.style.display = 'none'
+        }
+    })
+
+    document.addEventListener('keydown', (event) => {
+        if(event.code === 'Escape') {
+            modal.style.display = 'none'
+        }
+    })
 })
