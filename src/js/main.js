@@ -2,7 +2,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const tabsContent = document.querySelectorAll('.tabcontent')
     const tabs = document.querySelectorAll('.tabheader__item')
     const tabsParent = document.querySelector('.tabheader__items')
-
     function hideContent() {
         tabsContent.forEach(tabContent => {
             tabContent.classList.add('hide')
@@ -100,6 +99,7 @@ window.addEventListener('DOMContentLoaded', () => {
     buttons.forEach(btn => {
         btn.addEventListener('click', (event) => {
             modal.style.display = 'block'
+            modal.classList.add('fade')
         })
     })
 
@@ -114,4 +114,16 @@ window.addEventListener('DOMContentLoaded', () => {
             modal.style.display = 'none'
         }
     })
+
+    document.addEventListener('scroll', (event) => {
+        if(Math.floor(document.documentElement.scrollTop) === Math.floor(document.documentElement.scrollHeight - document.documentElement.clientHeight)) {
+            modal.style.display = 'block'
+            modal.classList.add('fade')
+        }
+    })
+
+    setTimeout(() => {
+        modal.classList.add('fade')
+        modal.style.display = 'block'
+    }, 30000)
 })
