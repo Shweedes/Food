@@ -34,14 +34,23 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    const date = '2025-11-10'
+    const date = '2025-10-10'
 
     function getTime(endTime) {
+        let days, hours, minutes, seconds
         const time = Date.parse(endTime) - Date.parse(new Date)
-        const days = Math.floor(time  / (1000 * 60 * 60 * 24))
-        const hours = Math.floor((time / (1000 * 60 * 60)) % 24)
-        const minutes = Math.floor((time / (1000 * 60) % 60))
-        const seconds = Math.floor((time / 1000) %60 )
+
+        if(time <= 0) {
+            days = 0
+            hours = 0
+            minutes = 0
+            seconds = 0
+        } else {
+            days = Math.floor(time  / (1000 * 60 * 60 * 24))
+            hours = Math.floor((time / (1000 * 60 * 60)) % 24)
+            minutes = Math.floor((time / (1000 * 60) % 60))
+            seconds = Math.floor((time / 1000) %60 )
+        }
 
         return {time, days, hours, minutes, seconds}
     }
