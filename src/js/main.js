@@ -126,4 +126,66 @@ window.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('fade')
         modal.style.display = 'block'
     }, 30000)
+
+
+    // Class for card
+
+    class CardForMenu {
+        constructor(menuImgSrc, menuImgAlt, menuName, menuText, price) {
+            this.menuImgSrc = menuImgSrc
+            this.menuImgAlt = menuImgAlt
+            this.menuName = menuName
+            this.menuText = menuText
+            this.price = price
+        }
+
+        parseToHtml() {
+            const menuItem = document.createElement('div')
+            const menuImg = document.createElement('img')
+            const menuSubtitle = document.createElement('h3')
+            const menuDescr = document.createElement('div')
+            const menuDivider = document.createElement('div')
+            const menuPrice = document.createElement('div')
+            const menuCost = document.createElement('div')
+            const menuTotal = document.createElement('div')
+            const menuContainer = document.querySelector('.menu__field > .container')
+
+            menuItem.classList.add('menu__item')
+            menuSubtitle.classList.add('menu__item-subtitle')
+            menuDescr.classList.add('menu__item-descr')
+            menuDivider.classList.add('menu__item-divider')
+            menuPrice.classList.add('menu__item-price')
+            menuCost.classList.add('menu__item-cost')
+            menuTotal.classList.add('menu__item-total')
+
+            menuImg.src = this.menuImgSrc
+            menuImg.alt = this.menuImgAlt
+
+            menuSubtitle.textContent = `Меню "${this.menuName}"`
+            menuDescr.textContent = this.menuText
+            menuCost.textContent = 'Цена:'
+            menuTotal.innerHTML = `<span>${this.price}</span> грн/день`
+
+            menuItem.append(menuImg)
+            menuItem.append(menuSubtitle)
+            menuItem.append(menuDescr)
+            menuItem.append(menuDivider)
+            menuItem.append(menuPrice)
+
+            menuPrice.append(menuCost)
+            menuPrice.append(menuTotal)
+
+
+            menuContainer.append(menuItem)
+        }
+    }
+
+    const fitness = new CardForMenu('img/tabs/vegy.jpg', 'vegy', 'Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229)
+    fitness.parseToHtml()
+
+    const premium = new CardForMenu('img/tabs/elite.jpg', 'elite', 'Премиум', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 550)
+    premium.parseToHtml()
+
+    const post = new CardForMenu('img/tabs/post.jpg', 'post', 'Постное', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.', 430)
+    post.parseToHtml()
 })
