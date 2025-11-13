@@ -188,4 +188,58 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const post = new CardForMenu('img/tabs/post.jpg', 'post', 'Постное', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.', 430)
     post.parseToHtml()
+
+    // Form
+
+    const forms = document.querySelectorAll('form')
+
+    const message = {
+        loading: 'Загрузка...',
+        err: 'Ошибка...',
+        success: 'Спасибо! Мы с Вами свяжемся в ближайшее время!'
+    }
+
+    forms.forEach((form) => {
+        sendForm(form)
+    })
+
+    function sendForm(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            let statusMessage = document.createElement('div')
+            statusMessage.classList.add('status')
+            statusMessage.textContent = message.loading
+            form.appendChild(statusMessage);
+
+
+            const request = new XMLHttpRequest()
+            request.open('POST', 'server.php')
+            request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+            const data = new FormData(form)
+
+            const obj = {}
+            data.forEach((value,key) => {
+                obj[key] = value
+            })
+
+            const json = JSON.stringify(obj)
+
+            request.send(json)
+
+            request.addEventListener('load', () => {
+                if(request.status === 200) {
+                    console.log(request.response)
+                    statusMessage.textContent = message.success
+                    form.reset()
+                    setTimeout(() => {
+                        statusMessage.remove()
+                    }, 2000)
+                } else {
+                    statusMessage.textContent = message.err
+                }
+            })
+        })
+    }
+
 })
