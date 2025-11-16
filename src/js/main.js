@@ -90,11 +90,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const buttons = document.querySelectorAll('[data-open-modal]')
     const modal = document.querySelector('.modal')
-    const closeModalButton = document.querySelector('.modal__close')
-
-    closeModalButton.addEventListener('click', () => {
-        modal.style.display = 'none'
-    })
 
     buttons.forEach(btn => {
         btn.addEventListener('click', (event) => {
@@ -104,7 +99,7 @@ window.addEventListener('DOMContentLoaded', () => {
     })
 
     modal.addEventListener('click',(event) => {
-        if(event.target.classList.contains('modal')) {
+        if(event.target.classList.contains('modal') || event.target.getAttribute('data-close-modal') === '') {
             modal.style.display = 'none'
         }
     })
@@ -194,7 +189,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const forms = document.querySelectorAll('form')
 
     const message = {
-        loading: 'Загрузка...',
+        loading: 'img/form/spinner.svg',
         err: 'Ошибка...',
         success: 'Спасибо! Мы с Вами свяжемся в ближайшее время!'
     }
@@ -207,15 +202,17 @@ window.addEventListener('DOMContentLoaded', () => {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            let statusMessage = document.createElement('div')
-            statusMessage.classList.add('status')
-            statusMessage.textContent = message.loading
-            form.appendChild(statusMessage);
-
+            const spinnerLoading = document.createElement('img')
+            spinnerLoading.src = message.loading
+            spinnerLoading.style.cssText = `
+                display: block;
+                margin: 0 auto;
+            `
+            form.insertAdjacentElement('afterend', spinnerLoading);
 
             const request = new XMLHttpRequest()
             request.open('POST', 'server.php')
-            request.setRequestHeader('Content-Type', 'application/json; charset=utf-8')
+            request.setRequestHeader('Content-Type', 'application/json; charset = utf-8')
             const data = new FormData(form)
 
             const obj = {}
@@ -229,17 +226,35 @@ window.addEventListener('DOMContentLoaded', () => {
 
             request.addEventListener('load', () => {
                 if(request.status === 200) {
-                    console.log(request.response)
-                    statusMessage.textContent = message.success
+                    showThanksModal(message.success)
                     form.reset()
-                    setTimeout(() => {
-                        statusMessage.remove()
-                    }, 2000)
                 } else {
-                    statusMessage.textContent = message.err
+                    showThanksModal(message.err)
                 }
             })
         })
     }
 
+    function showThanksModal(message) {
+        const prevModal = document.querySelector('.modal__dialog')
+
+        prevModal.style.display = 'none'
+
+        const thanksModal = document.createElement('div')
+        thanksModal.classList.add('modal__dialog')
+        thanksModal.innerHTML = `
+        <div class="modal__content">
+            <div data-close-modal class="modal__close">&times;</div>
+            <div class="modal__title">${message}</div>
+        <div>        
+        `
+
+        document.querySelector('.modal').append(thanksModal)
+        setTimeout(() => {
+            thanksModal.remove()
+            document.querySelector('.modal').style.display = 'none'
+            prevModal.style.display = 'block'
+        }, 4000)
+
+    }
 })
