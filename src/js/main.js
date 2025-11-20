@@ -210,9 +210,6 @@ window.addEventListener('DOMContentLoaded', () => {
             `
             form.insertAdjacentElement('afterend', spinnerLoading);
 
-            const request = new XMLHttpRequest()
-            request.open('POST', 'server.php')
-            request.setRequestHeader('Content-Type', 'application/json; charset = utf-8')
             const data = new FormData(form)
 
             const obj = {}
@@ -222,16 +219,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const json = JSON.stringify(obj)
 
-            request.send(json)
-
-            request.addEventListener('load', () => {
-                if(request.status === 200) {
-                    showThanksModal(message.success)
-                    form.reset()
-                } else {
-                    showThanksModal(message.err)
-                }
+            fetch('server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: json
             })
+                .then(data => data.text())
+                .then((data) => {
+                    console.log(data)
+                    showThanksModal(message.success)
+
+                })
+                .catch(() => {
+                    showThanksModal(message.err)
+                })
+                .finally(() => {
+                    form.reset()
+                })
         })
     }
 
