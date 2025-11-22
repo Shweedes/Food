@@ -185,22 +185,17 @@ window.addEventListener('DOMContentLoaded', () => {
         return await result.json()
     }
 
-    getResources('http://localhost:3000/menu')
-        .then(data => {
-            data.forEach(({img, altimg, title, descr, price}) => {
-                new CardForMenu(img, altimg, title, descr, price).parseToHtml()
-            })
-        })
+    // getResources('http://localhost:3000/menu')
+    //     .then(data => {
+    //         data.forEach(({img, altimg, title, descr, price}) => {
+    //             new CardForMenu(img, altimg, title, descr, price).parseToHtml()
+    //         })
+    //     })
 
-
-    // const fitness = new CardForMenu('img/tabs/vegy.jpg', 'vegy', 'Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229)
-    // fitness.parseToHtml()
-    //
-    // const premium = new CardForMenu('img/tabs/elite.jpg', 'elite', 'Премиум', 'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!', 550)
-    // premium.parseToHtml()
-    //
-    // const post = new CardForMenu('img/tabs/post.jpg', 'post', 'Постное', 'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.', 430)
-    // post.parseToHtml()
+    axios.get('http://localhost:3000/menu')
+        .then(data => data.data.forEach(({img, altimg, title, descr, price}) => {
+            new CardForMenu(img, altimg, title, descr, price).parseToHtml()
+        }))
 
     // Form
 
@@ -242,11 +237,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const data = new FormData(form)
 
-            // const obj = {}
-            // data.forEach((value,key) => {
-            //     obj[key] = value
-            // })
-
             const json = JSON.stringify(Object.fromEntries(data.entries()))
 
             postData('http://localhost:3000/requests', json)
@@ -286,9 +276,4 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000)
 
     }
-
-    fetch('http://localhost:3000/menu')
-        .then(data => data.json())
-        .then(result => console.log(result))
-
 })
