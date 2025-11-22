@@ -175,6 +175,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+
     const fitness = new CardForMenu('img/tabs/vegy.jpg', 'vegy', 'Фитнес', 'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!', 229)
     fitness.parseToHtml()
 
@@ -198,6 +199,18 @@ window.addEventListener('DOMContentLoaded', () => {
         sendForm(form)
     })
 
+    const postData = async (url, data) => {
+        const result = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: data
+        })
+
+        return await result.json()
+    }
+
     function sendForm(form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -212,25 +225,18 @@ window.addEventListener('DOMContentLoaded', () => {
 
             const data = new FormData(form)
 
-            const obj = {}
-            data.forEach((value,key) => {
-                obj[key] = value
-            })
+            // const obj = {}
+            // data.forEach((value,key) => {
+            //     obj[key] = value
+            // })
 
-            const json = JSON.stringify(obj)
+            const json = JSON.stringify(Object.fromEntries(data.entries()))
 
-            fetch('server.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: json
-            })
-                .then(data => data.text())
-                .then((data) => {
+            postData('http://localhost:3000/requests', json)
+                //.then(data => data.text())
+                .then(data => {
                     console.log(data)
                     showThanksModal(message.success)
-
                 })
                 .catch(() => {
                     showThanksModal(message.err)
