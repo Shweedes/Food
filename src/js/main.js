@@ -344,13 +344,17 @@ window.addEventListener('DOMContentLoaded', () => {
     let sliderIndex = 1
     let offset = 0
 
-    if(slides.length < 10) {
-        total.textContent = `0${slides.length}`
-        current.textContent = `0${sliderIndex}`
-    }  else {
-        total.textContent = `${slides.length}`
-        current.textContent = `${sliderIndex}`
+    const formatWithZero = () => {
+        if(slides.length < 10) {
+            total.textContent = `0${slides.length}`
+            current.textContent = `0${sliderIndex}`
+        }  else {
+            total.textContent = `${slides.length}`
+            current.textContent = `${sliderIndex}`
+        }
     }
+
+    formatWithZero()
 
     slides.forEach(slide => {
         slide.style.width = width
@@ -399,11 +403,15 @@ window.addEventListener('DOMContentLoaded', () => {
         dotsArray.push(dot)
     }
 
+    const deleteNotDigits = (string) => {
+        return +string.replace(/\D/g,'')
+    }
+
     next.addEventListener('click', () => {
-        if(offset === +width.slice(0, width.length - 2) * (slides.length - 1)) {
+        if(offset === deleteNotDigits(width) * (slides.length - 1)) {
             offset = 0
         } else {
-            offset += +width.slice(0, width.length - 2)
+            offset += deleteNotDigits(width)
         }
 
         slidesField.style.transform = `translateX(-${offset}px)`
@@ -414,11 +422,7 @@ window.addEventListener('DOMContentLoaded', () => {
             sliderIndex++
         }
 
-        if(slides.length < 10) {
-            current.textContent = `0${sliderIndex}`
-        }  else {
-            current.textContent = `${sliderIndex}`
-        }
+        formatWithZero()
 
         // dots logic
         dotsArray.forEach(dot => {
@@ -429,9 +433,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     prev.addEventListener('click', () => {
         if(offset === 0) {
-            offset = +width.slice(0, width.length - 2) * (slides.length - 1)
+            offset = deleteNotDigits(width) * (slides.length - 1)
         } else {
-            offset -= +width.slice(0, width.length - 2)
+            offset -= deleteNotDigits(width)
         }
 
         slidesField.style.transform = `translateX(-${offset}px)`
@@ -442,11 +446,7 @@ window.addEventListener('DOMContentLoaded', () => {
             sliderIndex--
         }
 
-        if(slides.length < 10) {
-            current.textContent = `0${sliderIndex}`
-        }  else {
-            current.textContent = `${sliderIndex}`
-        }
+        formatWithZero()
 
         // dots logic
         dotsArray.forEach(dot => {
@@ -467,15 +467,11 @@ window.addEventListener('DOMContentLoaded', () => {
             const slideTo = e.target.getAttribute('data-slide-to')
 
             sliderIndex = +slideTo
-            offset = +width.slice(0, width.length - 2) * (slideTo - 1)
+            offset = deleteNotDigits(width) * (slideTo - 1)
 
             slidesField.style.transform = `translateX(-${offset}px)`
 
-            if (slides.length < 10) {
-                current.textContent =  `0${sliderIndex}`;
-            } else {
-                current.textContent =  sliderIndex;
-            }
+            formatWithZero()
 
             dotsArray.forEach(dot => dot.style.opacity = ".5");
             dotsArray[sliderIndex-1].style.opacity = 1;
