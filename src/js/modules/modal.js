@@ -36,5 +36,4 @@ function modal() {
         modal.style.display = 'block'
     }, 30000)
 }
-
-module.exports = modal
+export default modal

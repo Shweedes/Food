@@ -1,3 +1,5 @@
+import {postData} from "../services/services";
+
 function forms() {
 
     // Form
@@ -13,18 +15,6 @@ function forms() {
     forms.forEach((form) => {
         sendForm(form)
     })
-
-    const postData = async (url, data) => {
-        const result = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: data
-        })
-
-        return await result.json()
-    }
 
     function sendForm(form) {
         form.addEventListener('submit', (e) => {
@@ -82,4 +72,4 @@ function forms() {
 
 }
 
-module.exports = forms
+export default forms

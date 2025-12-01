@@ -1,8 +1,8 @@
-function timer() {
+function timer(deadLine) {
 
     // Timer
 
-    const date = '2025-10-10'
+    // const date = '2025-10-10'
 
     function getTime(endTime) {
         let days, hours, minutes, seconds
@@ -41,19 +41,19 @@ function timer() {
         updateTimer()
 
         function updateTimer() {
-            daysElement.innerHTML = getZero(getTime(date).days)
-            hoursElement.innerHTML = getZero(getTime(date).hours)
-            minutesElement.innerHTML = getZero(getTime(date).minutes)
-            secondsElement.innerHTML = getZero(getTime(date).seconds)
+            daysElement.innerHTML = getZero(getTime(endTime).days)
+            hoursElement.innerHTML = getZero(getTime(endTime).hours)
+            minutesElement.innerHTML = getZero(getTime(endTime).minutes)
+            secondsElement.innerHTML = getZero(getTime(endTime).seconds)
 
-            if(getTime(date).time <= 0) {
+            if(getTime(endTime).time <= 0) {
                 clearInterval(setIntervalRender)
             }
         }
 
     }
 
-    renderTimer(date)
+    renderTimer(deadLine)
 }
 
-module.exports = timer
+export default timer
